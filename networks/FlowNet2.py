@@ -5,13 +5,13 @@ from torch.nn import init
 import math
 import numpy as np
 
-from resample2d_package.modules.resample2d import Resample2d
-from channelnorm_package.modules.channelnorm import ChannelNorm
+from .resample2d_package.resample2d import Resample2d
+from .channelnorm_package.channelnorm import ChannelNorm
 
-from .import FlowNetC
-from .import FlowNetS
-from .import FlowNetSD
-from .import FlowNetFusion
+from .FlowNetC import FlowNetC
+from .FlowNetS import FlowNetS
+from .FlowNetSD import FlowNetSD
+from .FlowNetFusion import FlowNetFusion
 
 from submodules import *
 'Parameter count = 162,518,834'

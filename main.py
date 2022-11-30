@@ -1,3 +1,6 @@
+import sys
+sys.path.append('.')
+sys.path.append('..')
 import numpy as np 
 import matplotlib.pyplot as plt 
 from stylegan_layers import  G_mapping,G_synthesis
@@ -13,12 +16,11 @@ import torch.optim as optim
 import os,random
 from tqdm import tqdm
 import networks
+from networks.FlowNet2 import FlowNet2
 import itertools
 from torchvision import transforms, utils
-try:
-    from networks.resample2d_package.resample2d import Resample2d
-except:
-    from .networks.resample2d_package.resample2d import Resample2d
+from networks.resample2d_package.resample2d import Resample2d
+
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
@@ -51,7 +53,7 @@ def main():
     args.start = 0
 
     flow_warping = Resample2d().to(device)
-    FlowNet = networks.FlowNet2(args)
+    FlowNet = FlowNet2(args)
     checkpoint = torch.load("weight_files/FlowNet2_checkpoint.pth.tar")
     FlowNet.load_state_dict(checkpoint['state_dict'])
     FlowNet = FlowNet.cuda()
