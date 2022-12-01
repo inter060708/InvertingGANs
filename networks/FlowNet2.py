@@ -13,7 +13,7 @@ from .FlowNetS import FlowNetS
 from .FlowNetSD import FlowNetSD
 from .FlowNetFusion import FlowNetFusion
 
-from submodules import *
+from .submodules import *
 'Parameter count = 162,518,834'
 
 class FlowNet2(nn.Module):
@@ -28,7 +28,7 @@ class FlowNet2(nn.Module):
         self.channelnorm = ChannelNorm()
 
         # First Block (FlowNetC)
-        self.flownetc = FlowNetC.FlowNetC(args, batchNorm=self.batchNorm)
+        self.flownetc = FlowNetC(args, batchNorm=self.batchNorm)
         self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear')
 
         if args.fp16:
@@ -40,7 +40,7 @@ class FlowNet2(nn.Module):
             self.resample1 = Resample2d()
 
         # Block (FlowNetS1)
-        self.flownets_1 = FlowNetS.FlowNetS(args, batchNorm=self.batchNorm)
+        self.flownets_1 = FlowNetS(args, batchNorm=self.batchNorm)
         self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear')
         if args.fp16:
             self.resample2 = nn.Sequential(
@@ -52,10 +52,10 @@ class FlowNet2(nn.Module):
 
 
         # Block (FlowNetS2)
-        self.flownets_2 = FlowNetS.FlowNetS(args, batchNorm=self.batchNorm)
+        self.flownets_2 = FlowNetS(args, batchNorm=self.batchNorm)
 
         # Block (FlowNetSD)
-        self.flownets_d = FlowNetSD.FlowNetSD(args, batchNorm=self.batchNorm) 
+        self.flownets_d = FlowNetSD(args, batchNorm=self.batchNorm) 
         self.upsample3 = nn.Upsample(scale_factor=4, mode='nearest') 
         self.upsample4 = nn.Upsample(scale_factor=4, mode='nearest') 
 
@@ -76,7 +76,7 @@ class FlowNet2(nn.Module):
             self.resample4 = Resample2d()
 
         # Block (FLowNetFusion)
-        self.flownetfusion = FlowNetFusion.FlowNetFusion(args, batchNorm=self.batchNorm)
+        self.flownetfusion = FlowNetFusion(args, batchNorm=self.batchNorm)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -186,7 +186,7 @@ class FlowNet2(nn.Module):
 
         return flownetfusion_flow
 
-class FlowNet2C(FlowNetC.FlowNetC):
+class FlowNet2C(FlowNetC):
     def __init__(self, args, batchNorm=False, div_flow=20):
         super(FlowNet2C,self).__init__(args, batchNorm=batchNorm, div_flow=20)
         self.rgb_max = args.rgb_max
@@ -254,7 +254,7 @@ class FlowNet2C(FlowNetC.FlowNetC):
         else:
             return self.upsample1(flow2*self.div_flow)
 
-class FlowNet2S(FlowNetS.FlowNetS):
+class FlowNet2S(FlowNetS):
     def __init__(self, args, batchNorm=False, div_flow=20):
         super(FlowNet2S,self).__init__(args, input_channels = 6, batchNorm=batchNorm)
         self.rgb_max = args.rgb_max
@@ -300,7 +300,7 @@ class FlowNet2S(FlowNetS.FlowNetS):
         else:
             return self.upsample1(flow2*self.div_flow)
 
-class FlowNet2SD(FlowNetSD.FlowNetSD):
+class FlowNet2SD(FlowNetSD):
     def __init__(self, args, batchNorm=False, div_flow=20):
         super(FlowNet2SD,self).__init__(args, batchNorm=batchNorm)
         self.rgb_max = args.rgb_max
@@ -364,7 +364,7 @@ class FlowNet2CS(nn.Module):
         self.channelnorm = ChannelNorm()
 
         # First Block (FlowNetC)
-        self.flownetc = FlowNetC.FlowNetC(args, batchNorm=self.batchNorm)
+        self.flownetc = FlowNetC(args, batchNorm=self.batchNorm)
         self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear')
 
         if args.fp16:
@@ -376,7 +376,7 @@ class FlowNet2CS(nn.Module):
             self.resample1 = Resample2d()
 
         # Block (FlowNetS1)
-        self.flownets_1 = FlowNetS.FlowNetS(args, batchNorm=self.batchNorm)
+        self.flownets_1 = FlowNetS(args, batchNorm=self.batchNorm)
         self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear')
 
         for m in self.modules():
@@ -429,7 +429,7 @@ class FlowNet2CSS(nn.Module):
         self.channelnorm = ChannelNorm()
 
         # First Block (FlowNetC)
-        self.flownetc = FlowNetC.FlowNetC(args, batchNorm=self.batchNorm)
+        self.flownetc = FlowNetC(args, batchNorm=self.batchNorm)
         self.upsample1 = nn.Upsample(scale_factor=4, mode='bilinear')
 
         if args.fp16:
@@ -441,7 +441,7 @@ class FlowNet2CSS(nn.Module):
             self.resample1 = Resample2d()
 
         # Block (FlowNetS1)
-        self.flownets_1 = FlowNetS.FlowNetS(args, batchNorm=self.batchNorm)
+        self.flownets_1 = FlowNetS(args, batchNorm=self.batchNorm)
         self.upsample2 = nn.Upsample(scale_factor=4, mode='bilinear')
         if args.fp16:
             self.resample2 = nn.Sequential(
@@ -453,7 +453,7 @@ class FlowNet2CSS(nn.Module):
 
 
         # Block (FlowNetS2)
-        self.flownets_2 = FlowNetS.FlowNetS(args, batchNorm=self.batchNorm)
+        self.flownets_2 = FlowNetS(args, batchNorm=self.batchNorm)
         self.upsample3 = nn.Upsample(scale_factor=4, mode='nearest') 
 
         for m in self.modules():

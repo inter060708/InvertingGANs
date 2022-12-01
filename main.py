@@ -43,7 +43,7 @@ def main():
 
 
     args=parser.parse_args()
-    args.video_path = "./RAVDESS_12/"
+    args.video_path = "./videos/"
     args.rgb_max = 1.0
     args.fp16 = False
     
